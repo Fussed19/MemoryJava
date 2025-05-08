@@ -61,9 +61,56 @@ public class HashSetCarta implements Set<Carta>{
     }
     
     //rehash aumenta el numero de buckets al llenarse mucho la tabla
-    private void rehash(){
-        throw new UnsupportedOperationException("Not supported yet."); 
+    private void rehash(int newCapacity){
+        
+        //Guardamos la antigua y actualizamos tamaño
+        List<Carta> [] oldBuckets = buckets;
+        buckets = new List[newCapacity];
+        
+        for(int i = 0; i<newCapacity;i++){
+            this.buckets[i]= new LinkedList<>();
+        }
+        
+        //Iniciamos un Iterador
+        Iterator<Carta> iterador = new IteradorBaraja(oldBuckets, numeroElementos);
+        
+        //Ponemos el numero de elementos a 0 (ya que add va sumando elementos)
+        this.numeroElementos = 0;
+        
+        //rellenamos con el iterador(igual que en addAll)
+        while(iterador.hasNext()){
+            Carta carta = iterador.next();
+            this.add(carta);
+        }
     }
+    
+    //Para hacer rehash, necesitamos crear un método que nos encuentre el próximo primo más cercano
+    //Esto se debe a que es mejor que el hash tenga un numero primo de buckets para evitar colisiones
+    //Metodo que busca el proximo primo de un numero
+    private int nextPrime(int n){
+        while(!isPrime(n)){
+            n++;
+        }
+        
+        return n;
+    }
+    
+    //Este metodo complementa al de arriba para saber si el numero es primo o no
+    //Quiero evitar usar un O(n) como es el caso de dividir todos los numeros anteriores al que compruebo
+    //Utilizaremos un algoritmo que comprueba solo hasta la raiz cuadrada del elemento O(sqrt(n)) que es mas rapido con numero grandes
+    private boolean isPrime(int n){
+        
+       if(n<=1) {return false;} //Caso base
+       
+       for(int i = 2; i<= (int)Math.sqrt(n);i++){
+           if(n%i == 0) {return false;}
+           break;
+       }
+        
+       return true;
+    }
+    
+    
     
     
     /*
@@ -74,8 +121,8 @@ public class HashSetCarta implements Set<Carta>{
     public boolean add(Carta elem) {
         int indice = hash(elem.getNombre());
         
-        if(numeroElementos/buckets.length > FACTOR_CARGA){
-            rehash();
+        if((double)(numeroElementos/buckets.length) > FACTOR_CARGA){
+            rehash(nextPrime(numeroElementos * 2));
         }
         
         if( buckets[indice].contains(elem)){ 
@@ -110,6 +157,11 @@ public class HashSetCarta implements Set<Carta>{
     @Override
     public void addAll(Set<Carta> conjunto) {
         
+        if((numeroElementos + conjunto.size()) > buckets.length){
+            rehash(nextPrime((numeroElementos + conjunto.size())*2));
+        }
+        
+        
         Iterator<Carta> iterador = conjunto.iterator();
         
         while (iterador.hasNext()) {
@@ -135,17 +187,25 @@ public class HashSetCarta implements Set<Carta>{
 
     @Override
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return numeroElementos; 
     }
 
     @Override
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        return (numeroElementos == 0); 
     }
 
     @Override
     public void clear() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        if(!isEmpty()){
+            //Para borrar es como volver a llamar al constructor
+            buckets = new List[CAPACIDAD_INICIAL];
+        
+            for(int i = 0; i<CAPACIDAD_INICIAL;i++){
+                buckets[i]= new LinkedList<>();
+            }
+            numeroElementos = 0; 
+        }
     }
 
     @Override
