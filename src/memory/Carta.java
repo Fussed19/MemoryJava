@@ -79,7 +79,29 @@ public class Carta implements CartaInterfaz<Carta> {
     
     //OTROS
     
+    //ESTOS METODOS SOBREESCRIBEN JAVA.OBJECT(objetos de java)
+    //Es importante porque si no java no tiene forma de saber si dos objetos son iguales en las cartas
+    //Aunque tengan todos los atributos iguales
     
+    @Override
+    public int hashCode() {
+        return Character.hashCode(nombre);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Carta other = (Carta) obj;
+        return this.nombre == other.nombre;
+    }
 }
 
 

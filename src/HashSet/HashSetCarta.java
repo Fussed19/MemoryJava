@@ -48,12 +48,7 @@ public class HashSetCarta implements Set<Carta>{
     *FUNCIONES HASH Y HASHCODE PARA SACAR CLAVES DE ACCESO
     */
     
-    /*
-        La funcion F(h1) o hashCode no es necesaria ya que trabajamos con char que representan numeros ASCII directamente
-        private int hashCode(char elem){   
-        }
-    
-    */
+    //hashCode se implementa en carta
     
     //hash nos saca el indice de acceso del elemento con su clave
     private int hash(char elem){
@@ -110,32 +105,40 @@ public class HashSetCarta implements Set<Carta>{
        return true;
     }
     
-    
-    
-    
     /*
     *IMPLEMENTACION DE LA INTERFAZ SET
     */
     
     @Override
     public boolean add(Carta elem) {
-        int indice = hash(elem.getNombre());
+        if (elem == null) {
+            return false;
+        }
         
+        int indice = hash(elem.getNombre());
+
         if((double)(numeroElementos/buckets.length) > FACTOR_CARGA){
             rehash(nextPrime(numeroElementos * 2));
         }
         
         if( buckets[indice].contains(elem)){ 
+            
            return false; //elemento repetido
+           
         }
-        
         buckets[indice].add(elem);
         numeroElementos++;
         return true; //elemento añadido con exito
+
     }
 
     @Override
     public boolean remove(Carta elem) {
+        
+        if (elem == null) {
+            return false;
+        }
+        
         int indice = hash(elem.getNombre());
         
         if( buckets[indice].contains(elem)){ 
@@ -149,19 +152,24 @@ public class HashSetCarta implements Set<Carta>{
 
     @Override
     public boolean contains(Carta elem) {
-        int indice = hash(elem.getNombre());
         
-        return buckets[indice].contains(elem); //true si el elem esta en el cajon
+        if (elem == null) {
+            return false;
+        }
+        
+        int indice = hash(elem.getNombre());
+        //Comparamos si esta en el bucket        
+        return buckets[indice].contains(elem);   
     }
 
     @Override
     public void addAll(Set<Carta> conjunto) {
-        
-        if((numeroElementos + conjunto.size()) > buckets.length){
+        //Comprobacion de si necesitamos un rehash por si no hay capacidad
+        if((numeroElementos + conjunto.size())/buckets.length > FACTOR_CARGA){
             rehash(nextPrime((numeroElementos + conjunto.size())*2));
         }
         
-        
+        //Iteramos en el nuevo conjunto y vamos añadiendo
         Iterator<Carta> iterador = conjunto.iterator();
         
         while (iterador.hasNext()) {
@@ -173,16 +181,44 @@ public class HashSetCarta implements Set<Carta>{
 
     @Override
     public void retainAll(Set<Carta> conjunto) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        
+        Iterator<Carta> iterador = this.iterator();
+        
+        //Simplemente iteramos como en los metodos anteriores, si el elemento
+        //NO esta presente en ambos conjuntos, se elimina
+        while(iterador.hasNext()){
+            Carta carta = iterador.next();
+            if(!conjunto.contains(carta)){
+                this.remove(carta);
+            }
+        }
+   
     }
     @Override
     public void removeAll(Set<Carta> conjunto) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        
+        //igual que en addAll pero eliminando
+        Iterator<Carta> iterador = conjunto.iterator(); 
+        
+        while(iterador.hasNext()){
+            Carta carta = iterador.next();
+            if(this.contains(carta)){
+                this.remove(carta);
+            }
+        }
     }
 
     @Override
     public boolean containsAll(Set<Carta> conjunto) {
-        throw new UnsupportedOperationException("Not supported yet."); 
+         Iterator<Carta> iterador = conjunto.iterator(); 
+         
+        while(iterador.hasNext()){
+            Carta carta = iterador.next();
+            if(!this.contains(carta)){
+                return false;                
+            }
+        }
+        return true; 
     }
 
     @Override
@@ -210,7 +246,23 @@ public class HashSetCarta implements Set<Carta>{
 
     @Override
     public Carta randomElem() {
-        throw new UnsupportedOperationException("Not supported yet."); 
+        //En vez de generar un indice random y poder caer en uno bucket vacio
+        //Voy a generar un numero random de 0 a numeroElementos, y voy a iterar hasta llegar a ese elemento,
+        //Asi la complejidad pasa a ser igual a la de una lista o un array O(n) en el peor caso al buscar un elemento.
+        
+        if(isEmpty()){
+            throw new IllegalStateException("No hay nada en el conjunto para elegir");
+        }
+        //Creamos el iterador
+        Iterator<Carta> iterador = this.iterator();
+        //generamos un elemento random
+        int randomElem = (int) (Math.random() * numeroElementos);
+        
+        for(int i = 0; i == randomElem; i++){
+            iterador.next();
+        }
+       
+        return iterador.next();
     }
 
     @Override
