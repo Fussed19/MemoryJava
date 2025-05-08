@@ -1,3 +1,9 @@
+/**
+ *CLASE BARAJA
+ * 
+ * @author Diego Palencia, Celia Puga, Jose Manuel Gomez
+ */
+
 package memory;
 
 import HashSet.HashSetBaraja;
@@ -28,7 +34,7 @@ public class Baraja {
     
     //OTROS
     
-    public void iniciarBaraja(){
+    public void inicializarBaraja(){
         //AÑADIMOS A LA BARAJA ELEMENTOS DE LA A A LA Z Y DEL 0 AL 9
         for(char c = 'A'; c <= 'Z'; c++){
             baraja.add(new Carta(c));

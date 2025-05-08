@@ -1,10 +1,9 @@
 /*
-INTERFAZ PARA CARTAS
+INTERFAZ PARA EL JUGADOR
 
 @author Diego Palencia, Celia Puga, Jose Manuel Gomez
 */
 package memory.interfaz;
-
 
 public interface JugadorInterfaz{
     

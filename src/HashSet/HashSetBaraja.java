@@ -271,4 +271,3 @@ public class HashSetBaraja implements Set<Carta>{
     }
  
 }
-
