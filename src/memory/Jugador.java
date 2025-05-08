@@ -1,12 +1,12 @@
-
+/**
+ *CLASE JUGADOR
+ * 
+ * @author Diego Palencia, Celia Puga, Jose Manuel Gomez
+ */
 package memory;
 
 import memory.interfaz.JugadorInterfaz;
 
-/**
- *
- * @author fussed
- */
 public class Jugador implements JugadorInterfaz{
     
     private String nombre;

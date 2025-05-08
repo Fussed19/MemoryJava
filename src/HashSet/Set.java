@@ -6,9 +6,9 @@
 
 package HashSet;
 
-import java.util.Iterator;
+import Iterator.Iterator;
 
-public interface Set<TipoGenerico> extends Iterable<TipoGenerico>{
+public interface Set<TipoGenerico>{
     
     /**
      * Añadir elemento NO repetido en el conjunto
@@ -42,8 +42,7 @@ public interface Set<TipoGenerico> extends Iterable<TipoGenerico>{
      *
      * @return Devuelve un objeto del iterador
      */
-    @Override
-    Iterator iterator();
+    Iterator<TipoGenerico> iterator();
     
     
     /**

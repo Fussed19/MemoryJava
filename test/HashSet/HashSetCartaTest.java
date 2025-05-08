@@ -1,7 +1,7 @@
 package HashSet;
 
 import memory.Carta;
-import java.util.Iterator;
+import Iterator.*;
 
 public class HashSetCartaTest {
 

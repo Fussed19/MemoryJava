@@ -1,9 +1,19 @@
+/**
+ *IMPLEMENTACION CONJUNTOS CON TABLAS DE HASH(SET)
+ * 
+ * **NOTA: Se utiliza un iterador propio en vez del de java.utils
+ * @author Diego Palencia
+ */
+
 package HashSet;
 
-import java.util.Iterator;
+//Paquetes propios
+import Iterator.*;
+import memory.Carta;
+//Paquetes de java
 import java.util.LinkedList;
 import java.util.List;
-import memory.Carta;
+
 
 public class HashSetCarta implements Set<Carta>{
     
@@ -145,71 +155,8 @@ public class HashSetCarta implements Set<Carta>{
 
     @Override
     public Iterator<Carta> iterator() {
-        return new HashSetIterator(this.buckets, this.numeroElementos); 
+        return new IteradorBaraja(this.buckets, this.numeroElementos); 
     }
-    
-    public class HashSetIterator implements Iterator<Carta>{
-        
-        /*
-        * CLASE DE ITERADOR
-        */
-        private int bucketActual = 0;
-        private int elementoActual = 0;
-        private int elementosRestantes;
-        private final List<Carta>[] buckets;
-        
-        /*
-        CONSTRUCTOR DEL METODO 
-        */
-        public HashSetIterator(List<Carta>[] buckets, int numeroElementos){
-            this.buckets = buckets;
-            elementosRestantes = numeroElementos;
-        }
-        
-        @Override
-        public boolean hasNext(){
-            return (elementosRestantes > 0);
-        }
-        
-        @Override
-        public Carta next(){
-            
-            //Comprobamos si hay siguiente
-            if(!hasNext()){
-                throw new IndexOutOfBoundsException("No hay mas elementos");
-            }
-            //Avanzamos a un bucket con elementos IMPORTANTE
-            //ESTA LINEA SIEMPRE hay que llamarla antes de cojer el objeto
-            //puesto que en la primera llamada si el primer bucket esta vacio
-            //salta error
-            nextBucket();
-            
-            //Cojemos el elemento
-            Carta carta = buckets[bucketActual].get(elementoActual);
-            
-            //Actualizamos variables
-            elementoActual++;
-            elementosRestantes--;
-            //Si no quedan mas elementos pasamos de bucket
-            if (elementoActual >= buckets[bucketActual].size()) {
-            bucketActual++;
-            elementoActual = 0;
-            }
-            //Devolvemos la carta
-            return carta;
-        }
-         
-        //METODO PRIVADO PARA AVANZAR POR TODOS LOS BUCKETS VACIOS
-        private void nextBucket(){
-            while((bucketActual < buckets.length) && buckets[bucketActual].isEmpty()){
-                bucketActual++;
-                elementoActual=0;
-            }
-        }
-    }
-    
-    
-    
-    
+ 
 }
 

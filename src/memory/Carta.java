@@ -1,11 +1,12 @@
+/**
+ *CLASE CARTA
+ * 
+ * @author Diego Palencia, Celia Puga, Jose Manuel Gomez
+ */
 package memory;
 
 import memory.interfaz.CartaInterfaz;
 
-/**
- *
- * @author fussed
- */
 public class Carta implements CartaInterfaz<Carta> {
     
     //Atributos
