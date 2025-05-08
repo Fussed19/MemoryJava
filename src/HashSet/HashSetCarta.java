@@ -178,28 +178,34 @@ public class HashSetCarta implements Set<Carta>{
             if(!hasNext()){
                 throw new IndexOutOfBoundsException("No hay mas elementos");
             }
-            
-            //Iteramos sobre buckets vacios para llegar a uno con algun elemento
-            while((bucketActual < buckets.length) && buckets[bucketActual].isEmpty()){
-                bucketActual++;
-                elementoActual=0;
-            }
+            //Avanzamos a un bucket con elementos IMPORTANTE
+            //ESTA LINEA SIEMPRE hay que llamarla antes de cojer el objeto
+            //puesto que en la primera llamada si el primer bucket esta vacio
+            //salta error
+            nextBucket();
             
             //Cojemos el elemento
             Carta carta = buckets[bucketActual].get(elementoActual);
             
-            //Pasamos un elemento en el bucket
-            // Si no hay mas, pasamos de bucket
-            if(elementoActual>=buckets.length){
+            //Actualizamos variables
+            elementoActual++;
+            elementosRestantes--;
+            //Si no quedan mas elementos pasamos de bucket
+            if (elementoActual >= buckets[bucketActual].size()) {
+            bucketActual++;
+            elementoActual = 0;
+            }
+            //Devolvemos la carta
+            return carta;
+        }
+         
+        //METODO PRIVADO PARA AVANZAR POR TODOS LOS BUCKETS VACIOS
+        private void nextBucket(){
+            while((bucketActual < buckets.length) && buckets[bucketActual].isEmpty()){
                 bucketActual++;
                 elementoActual=0;
             }
-            //Quitamos un elemento de los restantes y devolvemos el objeto
-            elementosRestantes--;
-
-            return carta;
         }
-          
     }
     
     
