@@ -9,8 +9,8 @@ import java.util.Set;
 public class HashSetCartaTest2 {
 
     public static void main(String[] args) {
-        // Crear un conjunto HashSetCarta
-        HashSetCarta set = new HashSetCarta();
+        // Crear un conjunto HashSetBaraja
+        HashSetBaraja set = new HashSetBaraja();
         
         // Añadir cartas aleatorias y verificar duplicados
         System.out.println("Probando duplicados y aleatoriedad:");

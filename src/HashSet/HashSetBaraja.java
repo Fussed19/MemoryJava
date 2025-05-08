@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class HashSetCarta implements Set<Carta>{
+public class HashSetBaraja implements Set<Carta>{
     
     /*
     * Declaración de variables de la tabla de Hash
@@ -35,7 +35,7 @@ public class HashSetCarta implements Set<Carta>{
     *CONSTRUCTOR
     */
     
-    public HashSetCarta(){
+    public HashSetBaraja(){
         this.buckets = new List[CAPACIDAD_INICIAL];
         
         for(int i = 0; i<CAPACIDAD_INICIAL;i++){

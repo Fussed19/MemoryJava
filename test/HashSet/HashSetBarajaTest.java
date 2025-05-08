@@ -4,11 +4,11 @@ import memory.Carta;
 import Iterator.*;
 import java.util.Random;
 
-public class HashSetCartaTest {
+public class HashSetBarajaTest {
 
     public static void main(String[] args) {
-        // Creamos el HashSetCarta
-        HashSetCarta set = new HashSetCarta();
+        // Creamos el HashSetBaraja
+        HashSetBaraja set = new HashSetBaraja();
         Random random = new Random();
 
         // Creamos algunas cartas
@@ -56,7 +56,7 @@ public class HashSetCartaTest {
 
         // Test 6: Método addAll con otro conjunto
         System.out.println("\nTest 6: Método addAll");
-        HashSetCarta otro = new HashSetCarta();
+        HashSetBaraja otro = new HashSetBaraja();
         Carta n1 = new Carta('1');
         Carta n2 = new Carta('2');
         Carta n3 = new Carta('3');
@@ -71,7 +71,7 @@ public class HashSetCartaTest {
 
         // Test 7: retainAll (retener solo los elementos que están en ambos conjuntos)
         System.out.println("\nTest 7: retainAll");
-        HashSetCarta conjuntoRetener = new HashSetCarta();
+        HashSetBaraja conjuntoRetener = new HashSetBaraja();
         conjuntoRetener.add(b);
         conjuntoRetener.add(c);
 
@@ -83,7 +83,7 @@ public class HashSetCartaTest {
 
         // Test 8: removeAll (eliminar elementos de un conjunto)
         System.out.println("\nTest 8: removeAll");
-        HashSetCarta conjuntoEliminar = new HashSetCarta();
+        HashSetBaraja conjuntoEliminar = new HashSetBaraja();
         conjuntoEliminar.add(b);
         conjuntoEliminar.add(c);
 
