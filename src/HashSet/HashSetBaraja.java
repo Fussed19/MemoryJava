@@ -248,7 +248,7 @@ public class HashSetBaraja implements Set<Carta>{
     public Carta randomElem() {
         //En vez de generar un indice random y poder caer en uno bucket vacio
         //Voy a generar un numero random de 0 a numeroElementos, y voy a iterar hasta llegar a ese elemento,
-        //Asi la complejidad pasa a ser igual a la de una lista o un array O(n) en el peor caso al buscar un elemento.
+        //Asi la complejidad pasa a ser igual a recorrer toda la tabla en el peor caso siendo O(m) m = nºBuckets.
         
         if(isEmpty()){
             throw new IllegalStateException("No hay nada en el conjunto para elegir");
@@ -265,9 +265,23 @@ public class HashSetBaraja implements Set<Carta>{
         return iterador.next();
     }
 
+    //Metodo para recibir una carta especifica sin eliminar
+    //Se introduce un nombre de carta, un c, y se busca directamente por su hash
+    public Carta getElem(char c){ 
+        int indice = hash(c);
+
+        for(Carta carta:buckets[indice]){
+            if(carta.getNombre()==c){
+                return carta;
+            }
+        }
+        
+        throw new IllegalStateException("Carta no encontrada, o no existe");
+    }
+    
     @Override
     public Iterator<Carta> iterator() {
         return new IteradorBaraja(this.buckets, this.numeroElementos); 
     }
- 
+  
 }

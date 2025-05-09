@@ -8,6 +8,7 @@ package memory;
 
 import HashSet.HashSetBaraja;
 import Iterator.Iterator;
+import java.util.Random;
 
 /**
  *
@@ -45,12 +46,28 @@ public class Baraja {
         }
         
     }
-    //Metodo que coge una carta random y la elimina (O(n)) similar a un array
+    //Metodo que coge una carta random y la elimina (O(m))
     public Carta getCarta(){
         
         Carta carta = baraja.randomElem();
         
         baraja.remove(carta);
+        
+        return carta;
+    }
+    
+    //Este metodo coge una carta entre el conjunto SOLO de la A a la Z y 0 al 9
+    //Acambio su coste es O(1)
+    public Carta getCartaOpt(){
+       
+        Random random = new Random();
+        
+        //Esta es la lista de caracteres posibles cuando se inicia la baraja, por lo tanto
+        //este metodo solo sirve si la baraja no se ha modificado
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        char randomCartaNombre = caracteres.charAt(random.nextInt(caracteres.length()));
+        
+        Carta carta = baraja.getElem(randomCartaNombre); 
         
         return carta;
     }

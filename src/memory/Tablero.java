@@ -58,8 +58,10 @@ public class Tablero implements TableroInterfaz{
         //Creamos una lista para meter las cartas y sus parejas
         List<Carta> cartasAnadidas = new ArrayList<>();
         
+        
+        //DOS METODOS A USAR -- getCarta() (casos generales) -- getCartaOpt() optimizado para este caso
         for(int i = 0; i<numCartas;i++){
-            Carta carta = baraja.getCarta();
+            Carta carta = baraja.getCartaOpt();
             cartasAnadidas.add(carta);
             cartasAnadidas.add(carta.getPareja());
         }
@@ -78,9 +80,41 @@ public class Tablero implements TableroInterfaz{
 
     }
     
-    public void revelarCarta(){
+    public void revelarCarta(char c){
         
+        //O(n) en el array
+        for(int i = 0; i<filas;i++){
+            for(int j = 0; j<columnas;j++){
+                if(tablero[i][j].getNombre() == c){
+                    tablero[i][j].setRevelada(true);
+                }
+            }
+        }
         
     }
     
+    public void mostrarTableroRevelado(){
+        
+        for(int i = 0; i<filas;i++){
+            for(int j = 0; j<columnas;j++){
+                if(tablero[i][j].getRevelada() == true){
+                    System.out.print("[" + tablero[i][j].getNombre() + "]");
+                } else {
+                    System.out.print("[ ]");
+                }
+            }
+            System.out.println("");
+        }
+    }
+    
+    public boolean todoRevelado(){
+        for(int i = 0; i<filas;i++){
+            for(int j = 0; j<columnas;j++){
+                if(tablero[i][j].getRevelada() == false){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }   
 }
