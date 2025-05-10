@@ -41,6 +41,9 @@ public class Tablero implements TableroInterfaz{
     public int getVidas(){
         return this.vidas;
     }
+    public boolean isRevelada(int i, int j){
+        return tablero[i][j].getRevelada();
+    }
     
     public void setTablero(Carta[][] nuevoTablero){
         this.tablero = nuevoTablero;
@@ -102,7 +105,7 @@ public class Tablero implements TableroInterfaz{
         
     }
     
-    public void mostrarTableroRevelado(int x, int y, int[] select1, int[] select2){
+    public void mostrarTableroRevelado(int x, int y, int[] select1, int[] select2, Jugador jugador){
         
         System.out.println("VIDAS: " + "*".repeat(vidas));
         
@@ -129,8 +132,9 @@ public class Tablero implements TableroInterfaz{
         
         //Comprobacion si al seleccionar dos son pareja
         if(inRange(select2)){
-            if(!parejaRevelada(select1, select2)){
+            if(!parejaRevelada(select1, select2, jugador)){
                 vidas--;
+                ;
             }
         }
         
@@ -138,11 +142,12 @@ public class Tablero implements TableroInterfaz{
     }
     
     //Ver si son pareja
-    public boolean parejaRevelada(int[] select1, int[] select2){
+    public boolean parejaRevelada(int[] select1, int[] select2, Jugador jugador){
         if( inRange(select1) && inRange(select2) &&
             tablero[select1[0]][select1[1]].equals(tablero[select2[0]][select2[1]])){
             
             tablero[select1[0]][select1[1]].setRevelada(true);
+            jugador.setCartasGanadas(jugador.getCartasGanadas()+1);
             return true;
         }     
         return false;

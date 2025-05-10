@@ -5,9 +5,10 @@
  */
 package memory;
 
+import java.io.Serializable;
 import memory.interfaz.JugadorInterfaz;
 
-public class Jugador implements JugadorInterfaz{
+public class Jugador implements JugadorInterfaz, Serializable{
     
     private String nombre;
     private int cartasGanadas;
