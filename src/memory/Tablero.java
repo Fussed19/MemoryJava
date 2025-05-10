@@ -61,7 +61,7 @@ public class Tablero implements TableroInterfaz{
         
         //DOS METODOS A USAR -- getCarta() (casos generales) -- getCartaOpt() optimizado para este caso
         for(int i = 0; i<numCartas;i++){
-            Carta carta = baraja.getCartaOpt();
+            Carta carta = baraja.getCarta();
             cartasAnadidas.add(carta);
             cartasAnadidas.add(carta.getPareja());
         }
@@ -93,18 +93,46 @@ public class Tablero implements TableroInterfaz{
         
     }
     
-    public void mostrarTableroRevelado(){
+    public void mostrarTableroRevelado(int x, int y, int[] select1, int[] select2){
+        
+        System.out.println("TABLERO\n");
+        
         
         for(int i = 0; i<filas;i++){
             for(int j = 0; j<columnas;j++){
-                if(tablero[i][j].getRevelada() == true){
-                    System.out.print("[" + tablero[i][j].getNombre() + "]");
+                if(tablero[i][j].getRevelada() == true || i == select1[0] && j == select1[1] ||  
+                   i == select2[0] && j == select2[1] ){
+
+                    if(i == x && j == y){
+                        System.out.print("> [" + tablero[i][j].getNombre() + "]  "); 
+                    } else {
+                        System.out.print("  [" + tablero[i][j].getNombre() + "]  ");
+                    }    
                 } else {
-                    System.out.print("[ ]");
+                    if(i == x && j == y){
+                        System.out.print("> [ ]  "); 
+                    } else {
+                        System.out.print("  [ ]  ");
+                    }                  
                 }
             }
-            System.out.println("");
+            System.out.println();
         }
+        
+        parejaRevelada(select1, select2);
+        
+    }
+    
+    public void parejaRevelada(int[] select1, int[] select2){
+        if( inRange(select1) && inRange(select2) &&
+            tablero[select1[0]][select1[1]].equals(tablero[select2[0]][select2[1]])){
+            
+            tablero[select1[0]][select1[1]].setRevelada(true);
+        }     
+    }
+    
+    private boolean inRange(int[] s){
+        return s[0] >= 0 && s[1] >= 0 && s[0] < filas && s[1] < columnas;
     }
     
     public boolean todoRevelado(){

@@ -68,6 +68,7 @@ public class Baraja {
         char randomCartaNombre = caracteres.charAt(random.nextInt(caracteres.length()));
         
         Carta carta = baraja.getElem(randomCartaNombre); 
+        baraja.remove(carta);
         
         return carta;
     }
