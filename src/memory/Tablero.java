@@ -15,6 +15,9 @@ public class Tablero implements TableroInterfaz{
     private int filas;
     private Carta[][] tablero;
     
+    //Vidas
+    int vidas = 5;
+    
     //CONTRUCTOR
     
     public Tablero(int columnas, int filas){
@@ -35,6 +38,9 @@ public class Tablero implements TableroInterfaz{
     public Carta[][] getTablero(){
         return this.tablero;
     }
+    public int getVidas(){
+        return this.vidas;
+    }
     
     public void setTablero(Carta[][] nuevoTablero){
         this.tablero = nuevoTablero;
@@ -46,6 +52,9 @@ public class Tablero implements TableroInterfaz{
     
     public void setFilas(int filas){
         this.filas = filas;
+    }
+    public void setVidas(int vidas){
+        this.vidas = vidas;
     }
     
     //OTROS
@@ -61,7 +70,7 @@ public class Tablero implements TableroInterfaz{
         
         //DOS METODOS A USAR -- getCarta() (casos generales) -- getCartaOpt() optimizado para este caso
         for(int i = 0; i<numCartas;i++){
-            Carta carta = baraja.getCarta();
+            Carta carta = baraja.getCartaOpt();
             cartasAnadidas.add(carta);
             cartasAnadidas.add(carta.getPareja());
         }
@@ -95,8 +104,7 @@ public class Tablero implements TableroInterfaz{
     
     public void mostrarTableroRevelado(int x, int y, int[] select1, int[] select2){
         
-        System.out.println("TABLERO\n");
-        
+        System.out.println("VIDAS: " + "*".repeat(vidas));
         
         for(int i = 0; i<filas;i++){
             for(int j = 0; j<columnas;j++){
@@ -119,18 +127,28 @@ public class Tablero implements TableroInterfaz{
             System.out.println();
         }
         
-        parejaRevelada(select1, select2);
+        //Comprobacion si al seleccionar dos son pareja
+        if(inRange(select2)){
+            if(!parejaRevelada(select1, select2)){
+                vidas--;
+            }
+        }
+        
         
     }
     
-    public void parejaRevelada(int[] select1, int[] select2){
+    //Ver si son pareja
+    public boolean parejaRevelada(int[] select1, int[] select2){
         if( inRange(select1) && inRange(select2) &&
             tablero[select1[0]][select1[1]].equals(tablero[select2[0]][select2[1]])){
             
             tablero[select1[0]][select1[1]].setRevelada(true);
+            return true;
         }     
+        return false;
     }
     
+    //Comprobacion de si el puntero esta fuera del rango
     private boolean inRange(int[] s){
         return s[0] >= 0 && s[1] >= 0 && s[0] < filas && s[1] < columnas;
     }

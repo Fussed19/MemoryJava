@@ -17,6 +17,7 @@ import java.util.Random;
 public class Baraja {
     
     private HashSetBaraja baraja ;
+    String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     
     //CONSTRUCTOR
     public Baraja(){
@@ -37,14 +38,9 @@ public class Baraja {
     
     public void inicializarBaraja(){
         //AÑADIMOS A LA BARAJA ELEMENTOS DE LA A A LA Z Y DEL 0 AL 9
-        for(char c = 'A'; c <= 'Z'; c++){
-            baraja.add(new Carta(c));
+        for(int i = 0; i < caracteres.length(); i++){
+            baraja.add(new Carta(caracteres.charAt(i)));
         }
-        
-        for(char c = '0';c  <= '9'; c++){
-            baraja.add(new Carta(c));
-        }
-        
     }
     //Metodo que coge una carta random y la elimina (O(m))
     public Carta getCarta(){
@@ -64,12 +60,14 @@ public class Baraja {
         
         //Esta es la lista de caracteres posibles cuando se inicia la baraja, por lo tanto
         //este metodo solo sirve si la baraja no se ha modificado
-        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         char randomCartaNombre = caracteres.charAt(random.nextInt(caracteres.length()));
         
         Carta carta = baraja.getElem(randomCartaNombre); 
         baraja.remove(carta);
         
+        //Borro el caracter de la lista para evitar duplicados
+        int indiceChar = caracteres.indexOf(randomCartaNombre);
+        caracteres = caracteres.substring(0, indiceChar) + caracteres.substring(indiceChar +1);
         return carta;
     }
     
