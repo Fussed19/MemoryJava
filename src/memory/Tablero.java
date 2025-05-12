@@ -91,7 +91,7 @@ public class Tablero implements TableroInterfaz{
         }
 
     }
-    
+    //Metodo para poner las cartas que se han encontrado como reveladas
     public void revelarCarta(char c){
         
         //O(n) en el array
@@ -105,10 +105,12 @@ public class Tablero implements TableroInterfaz{
         
     }
     
+    //Imprime el tablero en cada iteracion del bucle de juego
     public void mostrarTableroRevelado(int x, int y, int[] select1, int[] select2, Jugador jugador){
         
         System.out.println("VIDAS: " + "*".repeat(vidas));
-        
+        //Compruueba seleciones, posicion del cursor y cartas reveladas para
+        //Customizar la impresion del tablero y darle un aspecto mas "amigable"
         for(int i = 0; i<filas;i++){
             for(int j = 0; j<columnas;j++){
                 if(tablero[i][j].getRevelada() == true || i == select1[0] && j == select1[1] ||  

@@ -15,35 +15,29 @@ public class Main {
     static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        
+        //BUCLE DEL PROGRAMA
         boolean exit = false;
         
         do{
             System.out.println("\n\n***************************************************"
                              +     "\n--------------------MEMORY GAME--------------------"
-                             +     "\n***************************************************");            
+                             +     "\n***************************************************");   
+            //Inicio de variables
             int columnas;
             int filas;
             int vidas;
             String nombreJugador;
             
-            //ESTO ASEGURA QUE EL NOMBRE SEA DE UNA PALABRA, Y SOLO CON CARACTERES NORMALES
-            do {
-                System.out.print("\nNOMBRE JUGADOR: ");
-                nombreJugador = scanner.next();
-                if(nombreJugador.isEmpty() || nombreJugador.contains(" ") || !nombreJugador.matches("[a-zA-Z]+")){
-                    System.out.println("\n Nombre de jugador no válido, solo se admite una palabra y caracteres de la A a la Z");
-                }
-            } while(nombreJugador.isEmpty() || nombreJugador.contains(" ") || !nombreJugador.matches("[a-zA-Z]+"));
-            
+            //ESTO ASEGURA QUE EL NOMBRE SEA DE 8 LETRAS Y VALIDO
+            nombreJugador = getNombre();
             Jugador jugador = new Jugador(nombreJugador);    
-                
+            //Entrada de FILAS COLUMANS Y VIDAS    
             do{ 
                 System.out.print("\nINTRODUCE EL NUMERO DE FILAS:    ");
-                columnas = scanner.nextInt();
+                columnas = getInt();
 
                 System.out.print("\nINTRODUCE EL NUMERO DE COLUMNAS: ");
-                filas = scanner.nextInt();
+                filas = getInt();
 
                 
 
@@ -56,12 +50,12 @@ public class Main {
             
             do{
                 System.out.print("\nINTRODUCE EL NUMERO DE VIDAS:    ");
-                vidas = scanner.nextInt();
+                vidas = getInt();
                 if(vidas <= 0 || vidas >= 21){
                     System.out.println("\nNúmero de vidas inválido. Tiene que estar entre 1 y 20");
                 } 
             } while(vidas <= 0 || vidas > 20);    
-
+            //Inicializacion del juego despues de recibir los datos
             Tablero tablero = new Tablero(columnas, filas);
             tablero.setVidas(vidas);
             Baraja baraja = new Baraja();
@@ -78,7 +72,7 @@ public class Main {
             }
 
             int cursorX = 0, cursorY = 0;
-
+            //BUCLE DEL JUEGO
             boolean game = true; 
             while (game && tablero.getVidas() > 0) {
                 
@@ -92,9 +86,12 @@ public class Main {
                     game=false;
                 } 
 
-
+                //Esta parte compruba si las seleciones(casillas ya marcadas)
+                //No se repiten y las resetea cuando se usan las dos
                 if(select1[0] != -1 && select2[0] != -1){
                     try{
+                        //Espera de un segundo
+                        //Para recordar las casillas marcadas(en especial la segunda)
                         Thread.sleep(1000);
 
                         for(int i= 0;i<2;i++){
@@ -106,13 +103,14 @@ public class Main {
                         System.out.println("Error");
                     }
                 } else {
-
+                    //entrada de opciones
                     String input = scanner.nextLine();
                     if (input.isEmpty()) {continue;}
                     char tecla = input.charAt(0);
 
                     switch (tecla) {
                         case 'w': 
+                            //Las funciones de Math.max/min sirven para no salirse del borde del tablero
                             cursorY = Math.max(0, cursorY - 1); 
                             break;
                         case 's': 
@@ -136,9 +134,12 @@ public class Main {
                                 select2[1] = cursorX;  
                             }
                             break;
-                        case 'e': 
-                            exit = false;
-                            break;                        
+                        case 'e':
+                            game = false;
+                            break; 
+                        default:
+                            System.out.println("Introduce una opcion valida");
+                            break;
                     }
                 }            
             }
@@ -171,6 +172,50 @@ public class Main {
             
             
         } while(!exit);    
+    }
+    
+    public static int getInt(){
+
+        while(true){
+            
+            String num = scanner.nextLine().trim();
+            try{
+                //COMPROBAMOS QUE EL NUMERO SEA ENTERO RECOGIENDO UNA STRING
+                //La string no colapsa al meter algo raro, entonces la intentamos convertir a int
+                //Si hay algun error se repite por el bucle.
+                return Integer.parseInt(num);
+            } catch (Exception e){
+                    System.out.print("ERROR! ingrese un entero válido:   ");
+            }
+        }
+    }
+    
+    //Metodo para recoger nombre con su manejo de excepciones
+    public static String getNombre(){
+        String nombreJugador;
+        
+        while(true){
+            try{
+                System.out.print("\nNOMBRE JUGADOR(MAX 8 LETRAS): ");
+                nombreJugador = scanner.nextLine().trim(); //trim elimina espacios al principio y final
+                
+                if(nombreJugador.isEmpty()){
+                    System.out.println("Error, el nombre debe contener algún caracter");
+                    continue;
+                }
+                
+                if(nombreJugador.length() > 8){
+                    System.out.println("Error, el nombre es demasiado largo");
+                    continue;
+                }
+                
+                return nombreJugador;
+                
+            } catch (Exception e){
+                System.out.println("ERROR: introduzca una string válida");
+                scanner.nextLine();
+            }
+        }
     }
     
     //Metodo para guardar jugadores en una base de datos
